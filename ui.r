@@ -1,26 +1,32 @@
-# Building Shiny App
-
+library(shiny)
+# Define UI for application
 shinyUI(fluidPage(
-  titlePanel(title = "Sample Application Form", windowTitle = 'Welcome to Shiny!!'),
-    sidebarLayout(  
-      sidebarPanel(("Enter Your Personal Details"),
-                    textInput("Name", "Enter Your Name", ""),
-                    textInput("Age", "Enter Your Age", "" ),
-                    textInput("Date Of Birth", "Enter Your Date of Birth", ""),
-                    radioButtons("Gender", "Select the Gender", list("Male", "Female", "TransGender")),
-                    sliderInput("Temperature", min = 25, max = 48, value = c(34, 45), label = "Temp in Fahrenheit"),
-                    selectInput("StateNames", "Select State", c("Select","Mumbai", "Kolkatta", "New Delhi", "Banglore", "Pune","Patna", "Chennai"), selected = "Select", selectize = FALSE,),
-                    width = 10),position = "left", fluid = T,
-                    
-      mainPanel(("Personal Information"),
-               textOutput("MyName"),
-               textOutput("MyAge"),
-               textOutput("dob"),
-               textOutput("mygender"),
-               textOutput("mytemp"),
-               textOutput("states"))
+  # Header or Title Panel 
+  titlePanel(title = h4("Iris Dataset", align="center")),
+  sidebarLayout(
+    # Sidebar panel
+    sidebarPanel(
+      selectInput("var", "1. Select the variable from the iris dataset", choices =c("Sepal.Length" = 1, 
+                                        "Sepal.Width" = 2, "Petal.Length" = 3, "Petal.Width" = 4), selected = 1, multiple = c(1:4)),
+      br(),
+      sliderInput("bins", "2. Select the number of BINs for histogram", min=5, max = 25, value=15),
+      br(), 
+      radioButtons("color", "3. Select the colour of histogram", choices=c("Green", "Red", "Yellow"), selected ="Green")
+      
+    ),
+    
+    # Main Panel
+    mainPanel(
+      tabsetPanel(type="tab", 
+                  tabPanel("Summary", verbatimTextOutput("summary")),
+                  tabPanel("Structure", verbatimTextOutput("str")),
+                  tabPanel("Data", tableOutput("data")),
+                  tabPanel("Plot", plotOutput("myhist"))
+                  
+      )
       
     )
+    
   )
+)  
 )
-

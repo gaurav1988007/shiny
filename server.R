@@ -1,24 +1,29 @@
+
+library(shiny)
+data(iris)
 shinyServer(
-  function(input, output){
+  
+  function(input, output) {
     
-    # Rendering for Name    
-    output$MyName <- renderText(input$Name)
+    output$str <- renderPrint({str(iris)})
     
-    # Rendering for Age    
-    output$MyAge <- renderText(input$Age)
+    output$summary <- renderPrint({
+      summary(iris)
+    })
     
-    # Rendering for DOB
-    output$dob <- renderText(input$`Date Of Birth`)
+    output$data <- renderTable({
+      colm <- as.numeric(input$var)
+      iris[colm]
+      #head(iris)
+      
+    })
     
-    # Rendering for Gender
-    output$mygender <-  renderText(input$gender)
-    
-    # Rendering for Gender
-    output$mytemp <- renderText(input$Temperature)
-    
-    # Rendering for states        
-    output$states <- renderText(input$StateNames)
-    
+    output$myhist <- renderPlot({
+      colm <- as.numeric(input$var)
+      hist(iris[,colm], breaks=seq(0, max(iris[,colm]), l=input$bins+1), col=input$color, 
+           main="Histogram of iris dataset", xlab=names(iris[colm]), xlim=c(0,max(iris[,colm])))
+      
+    })
     
   }
 )
